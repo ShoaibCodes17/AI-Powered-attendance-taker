@@ -1,5 +1,5 @@
- # AI-Powered College Attendance Tracker using Face Recognition
-# Dependencies: pip install opencv-python numpy mysql-connector-python pillow
+# AI-Powered College Attendance Tracker using Face Recognition
+# Dependencies: pip install opencv-python numpy mysql-connector-python pillow python-dotenv
 
 import cv2
 import numpy as np
@@ -10,14 +10,18 @@ import pickle
 from PIL import Image
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 class AttendanceTracker: 
     def __init__(self):
         self.db_config = {
-            'host': 'localhost',
-            'user': 'root',
-            'password': 'shoeb',
-            'database': 'attendance_db'
+            'host': os.getenv('DB_HOST', 'localhost'),
+            'user': os.getenv('DB_USER', 'root'),
+            'password': os.getenv('DB_PASSWORD', ''),
+            'database': os.getenv('DB_NAME', 'attendance_db')
         }
         self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
         self.recognizer = cv2.face.LBPHFaceRecognizer_create()
@@ -431,9 +435,13 @@ if __name__ == "__main__":
     print("=====================================")
     print("\nSetup Instructions:")
     print("1. Install required packages:")
-    print("   pip install opencv-python numpy mysql-connector-python pillow")
-    print("2. Install MySQL and create a database named 'attendance_db'")
-    print("3. Update the database configuration in the code")
+    print("   pip install opencv-python numpy mysql-connector-python pillow python-dotenv")
+    print("2. Create a .env file in the project root with:")
+    print("   DB_HOST=localhost")
+    print("   DB_USER=root")
+    print("   DB_PASSWORD=your_password")
+    print("   DB_NAME=attendance_db")
+    print("3. Install MySQL and create a database named 'attendance_db'")
     print("4. Run the application")
     print("\nFeatures:")
     print("- Face recognition-based attendance")
